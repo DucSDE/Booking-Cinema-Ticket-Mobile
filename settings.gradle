@@ -6,12 +6,15 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         google()
         mavenCentral()
-        jcenter()
+        maven { url "https://maven.google.com" }
         maven { url 'https://jitpack.io' }
+        maven { url "https://maven.xyz.com" }
+        //noinspection JcenterRepositoryObsolete
+        jcenter()
     }
 }
 rootProject.name = "DreamTheaTher"

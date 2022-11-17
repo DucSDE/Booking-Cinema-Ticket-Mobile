@@ -3,10 +3,7 @@ package com.dream.dreamtheather.Fragment;
 import static android.Manifest.permission.MANAGE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static android.app.Activity.RESULT_OK;
-import static android.os.Environment.DIRECTORY_PICTURES;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -31,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -40,15 +36,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.Glide;
 import com.dream.dreamtheather.MainActivity;
 import com.dream.dreamtheather.Model.Ticket;
 import com.dream.dreamtheather.Model.UserInfo;
 import com.dream.dreamtheather.R;
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.io.File;
-import java.util.Map;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -113,7 +104,7 @@ public class PurchaseScreen extends Fragment {
                 new ActivityResultContracts.RequestMultiplePermissions(),
                 result -> {
                     Log.e("activityResultLauncher", "" + result.toString());
-                    Boolean areAllGranted = true;
+                    boolean areAllGranted = true;
                     for (Boolean b : result.values()) {
                         areAllGranted = areAllGranted && b;
                     }
