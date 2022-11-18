@@ -180,5 +180,9 @@
     <string name="add_new_film">Thêm phim mới</string>
     <string name="choose_recharge_provider">Vui lòng chọn phương thức nạp tiền</string>
     <string name="sending_recharge_order">Đang thực hiện thanh toán ...</string>
+    <string name="password">Mật khẩu</string>
+    <string name="email_or_username">Email hoặc tên đăng nhập</string>
+    <string name="or">Hoặc đăng nhập </string>
+    <string name="icon">icon</string>
 
 </resources>

@@ -217,5 +217,10 @@
     <color name="a_white">#FFFFFF</color>
     <color name="TabLayoutBackground">#282828</color>
     <color name="TabItemBackground">#4A4A4A</color>
-
+    <!--    Color for app-->
+    <color name="a_black_700">#000000</color>
+    <color name="a_orange_500">#f37720</color>
+    <color name="a_orange_300">#f2991f</color>
+    <color name="a_light_cream">#fff5e8</color>
+    <color name="a_green_700">#124742</color>
 </resources>

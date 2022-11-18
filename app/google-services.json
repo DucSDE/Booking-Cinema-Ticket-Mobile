@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "359747608446-bpgb66a6dt537kp3pd9ap3kghqgoki7k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dream.dreamtheather",
+            "certificate_hash": "5e900636b8587f4264491ef4561d2c949c046d9d"
+          }
+        },
+        {
           "client_id": "359747608446-ripqh6168vmst1f4c95bupnpsit07ho9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
