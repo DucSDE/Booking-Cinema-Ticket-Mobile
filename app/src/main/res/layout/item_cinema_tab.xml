@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/itemCinema"
@@ -15,6 +16,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/main_background"
         >
 
         <com.makeramen.roundedimageview.RoundedImageView
@@ -38,7 +40,7 @@
             app:layout_constraintStart_toEndOf="@id/imageCinema"
             app:layout_constraintTop_toTopOf="parent"
             android:paddingEnd="10dp"
-            >
+            tools:ignore="RtlSymmetry">
 
             <TextView
                 android:id="@+id/tvCinemaName"
@@ -68,7 +70,8 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:scaleType="fitXY"
-                    app:srcCompat="@drawable/icons8_phone_48" />
+                    app:srcCompat="@drawable/icons8_phone_48"
+                    android:contentDescription="@string/icon" />
 
                 <TextView
                     android:id="@+id/tvHotline"
@@ -108,7 +111,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_location_pin"
-                        />
+                        android:contentDescription="@string/icon" />
 
 
                     <TextView

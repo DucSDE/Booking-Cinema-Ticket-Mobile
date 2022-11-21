@@ -1,4 +1,4 @@
-package com.dream.dreamtheather;
+package com.dream.dreamtheather.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -8,9 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
-import com.dream.dreamtheather.Fragment.AccountTabFragment;
-import com.dream.dreamtheather.Fragment.HomeTabFragment;
-import com.dream.dreamtheather.Fragment.TheatherFragment;
+import com.dream.dreamtheather.R;
+import com.dream.dreamtheather.fragment.AccountTabFragment;
+import com.dream.dreamtheather.fragment.hometab.HomeTabFragment;
+import com.dream.dreamtheather.fragment.cinemas.TheatherFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;

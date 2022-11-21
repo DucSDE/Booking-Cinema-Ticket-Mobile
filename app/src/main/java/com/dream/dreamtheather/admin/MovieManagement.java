@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.dream.dreamtheather.AdminActivity;
+import com.dream.dreamtheather.activity.AdminActivity;
 import com.dream.dreamtheather.R;
 
 import butterknife.BindView;

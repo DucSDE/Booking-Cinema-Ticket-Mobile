@@ -1,4 +1,4 @@
-package com.dream.dreamtheather;
+package com.dream.dreamtheather.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -24,6 +24,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dream.dreamtheather.Model.UserInfo;
+import com.dream.dreamtheather.R;
 import com.dream.dreamtheather.data.MyPrefs;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -56,7 +57,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class Login extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
     private static final int
@@ -119,7 +120,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         switch (view.getId()) {
             case LOGIN:
                 if (checkValidate()) {
-                    Toast.makeText(Login.this, "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.VISIBLE);
                 } else {
                     SignIn();
@@ -183,8 +184,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     public void ResetPass(View view) {
 //        startActivity(new Intent(this, ForgottenPassword.class));
-        final EditText resetMail = new EditText(Login.this);
-        final AlertDialog.Builder passWordResetDialog = new AlertDialog.Builder(Login.this);
+        final EditText resetMail = new EditText(LoginActivity.this);
+        final AlertDialog.Builder passWordResetDialog = new AlertDialog.Builder(LoginActivity.this);
         passWordResetDialog.setTitle("Quên mật khẩu?");
         passWordResetDialog.setMessage("Nhập email của bạn:");
         passWordResetDialog.setView(resetMail);
@@ -197,12 +198,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         mAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
-                                Toast.makeText(Login.this, "Đã gửi link reset về email của bạn", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Đã gửi link reset về email của bạn", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(Login.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -276,7 +277,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void gotoMain() {
-        startActivity(new Intent(Login.this, MainActivity.class));
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
     }
 
@@ -298,13 +299,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                             if (user.isEmailVerified()) {
-                                Toast.makeText(Login.this, "Đăng nhập email thành công", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Đăng nhập email thành công", Toast.LENGTH_SHORT).show();
                                 gotoMain();
                             } else {
-                                Toast.makeText(Login.this, "Vui lòng xác nhận email!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Vui lòng xác nhận email!", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            Toast.makeText(Login.this, "Lỗi đăng nhập: " + task.getException(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Lỗi đăng nhập: " + task.getException(), Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.VISIBLE);
                         }
                     });
@@ -351,14 +352,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
             mAuth.signInWithCredential(credential)
                     .addOnSuccessListener(task -> {
-                        Toast.makeText(Login.this, "Đăng nhập bằng Google thành công!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Đăng nhập bằng Google thành công!", Toast.LENGTH_SHORT).show();
                         MainActivity.user = mAuth.getCurrentUser();
                         MainActivity.mGoogleSignInClient = mGoogleSignInClient;
                         checkIfFirstTimeSignIn();
                         gotoMain();
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(Login.this, "Xác thực không thành công, vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Xác thực không thành công, vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "last log - error - Authentication Failed- " + e.getMessage());
                         Log.e(TAG, "last log - error - Authentication Failed- " + account.getEmail());
                         startGoogleSignInIntent();
@@ -393,13 +394,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     @Override
                     public void onCancel() {
                         Log.v(TAG, "Facebook: Login Cancel");
-                        Toast.makeText(Login.this, R.string.signin_cancel, Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this, R.string.signin_cancel, Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onError(@NonNull FacebookException exception) {
                         Log.v(TAG, "Facebook: Login Failed - cause:" + exception);
-                        Toast.makeText(Login.this, R.string.signin_error + exception.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this, R.string.signin_error + exception.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -412,14 +413,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 .addOnSuccessListener(authResult -> {
                     // Sign in success, update UI with the signed-in user's information
                     Log.v(TAG, "signInWithCredential - Facebook: On Success Listener");
-                    Toast.makeText(Login.this, "Đăng nhập bằng Facebook Thành công", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Đăng nhập bằng Facebook Thành công", Toast.LENGTH_SHORT).show();
                     checkIfFirstTimeSignIn();
                     gotoMain();
                 })
                 .addOnFailureListener(e -> {
                     // If sign in fails, display a message to the user.
                     Log.v(TAG, "signInWithCredential - Facebook:On Failure Listener" + e.getMessage());
-                    Toast.makeText(Login.this, "Đăng nhập Facebook thất bại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Đăng nhập Facebook thất bại", Toast.LENGTH_SHORT).show();
                 })
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {

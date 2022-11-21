@@ -1,4 +1,4 @@
-package com.dream.dreamtheather.Fragment;
+package com.dream.dreamtheather.fragment.hometab;
 
 import android.os.Bundle;
 
@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
@@ -17,24 +15,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dream.dreamtheather.R;
+import com.dream.dreamtheather.fragment.hometab.adapter.HomeTabViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.android.youtube.player.internal.i;
-
-import org.w3c.dom.Text;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeTabFragment extends Fragment implements SearchView.OnQueryTextListener{
+public class HomeTabFragment extends Fragment implements SearchView.OnQueryTextListener {
     private static final String TAG = "HomeTab";
 
     String[] tabArray = {
-            "Spotlight",
             "Đang chiếu",
             "Sắp chiếu"};
 
@@ -44,18 +38,15 @@ public class HomeTabFragment extends Fragment implements SearchView.OnQueryTextL
     @BindView(R.id.home_viewpager)
     ViewPager2 viewPager;
 
-    ViewPagerAdapter viewPagerAdapter;
+    HomeTabViewPagerAdapter homeTabViewPagerAdapter;
 
-
-    public HomeTabFragment newInstance(){
-        HomeTabFragment fragment = new HomeTabFragment();
-        return fragment;
+    public HomeTabFragment newInstance() {
+        return new HomeTabFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
@@ -69,11 +60,11 @@ public class HomeTabFragment extends Fragment implements SearchView.OnQueryTextL
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onViewCreated: ");
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         tabLayout = view.findViewById(R.id.tab_layout);
 
-        viewPagerAdapter = new ViewPagerAdapter(this);
-        viewPager.setAdapter(viewPagerAdapter);
+        homeTabViewPagerAdapter = new HomeTabViewPagerAdapter(this);
+        viewPager.setAdapter(homeTabViewPagerAdapter);
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {
                     tab.setText(tabArray[position]);

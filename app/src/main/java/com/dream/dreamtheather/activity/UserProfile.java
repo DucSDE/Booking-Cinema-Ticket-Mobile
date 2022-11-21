@@ -1,7 +1,6 @@
-package com.dream.dreamtheather;
+package com.dream.dreamtheather.activity;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -17,9 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.gif.GifDrawable;
-import com.bumptech.glide.request.target.ImageViewTarget;
 import com.dream.dreamtheather.Model.Users;
+import com.dream.dreamtheather.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -28,23 +26,14 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 
 public class UserProfile extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -79,7 +68,7 @@ public class UserProfile extends AppCompatActivity implements GoogleApiClient.On
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
 
-        imgAvata = findViewById(R.id.imgAvata);
+        imgAvata = findViewById(R.id.imgAvatar);
         btnBack = findViewById(R.id.btnBack);
 
         tvBalance = findViewById(R.id.tvBalance);
@@ -89,7 +78,7 @@ public class UserProfile extends AppCompatActivity implements GoogleApiClient.On
         edtPhoneNum = findViewById(R.id.edtPhoneNum);
         edtBirthDay = findViewById(R.id.edtBirthDay);
         edtEmail = findViewById(R.id.edtEmail);
-        edtUserFullName = findViewById(R.id.edtUserFullName);
+        edtUserFullName = findViewById(R.id.tvUserFullName);
 
         btnSignOut = findViewById(R.id.btnSignOut);
         btnSave = findViewById(R.id.btnSave);
@@ -235,7 +224,7 @@ public class UserProfile extends AppCompatActivity implements GoogleApiClient.On
     }
 
     private void gotoLoginAcitivity() {
-        startActivity(new Intent(UserProfile.this, Login.class));
+        startActivity(new Intent(UserProfile.this, LoginActivity.class));
         finish();
     }
 

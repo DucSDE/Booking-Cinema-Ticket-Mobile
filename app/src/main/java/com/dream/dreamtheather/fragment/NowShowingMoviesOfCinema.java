@@ -1,4 +1,4 @@
-package com.dream.dreamtheather.Fragment;
+package com.dream.dreamtheather.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.dream.dreamtheather.DreamLocation;
-import com.dream.dreamtheather.MainActivity;
+import com.dream.dreamtheather.activity.DreamLocation;
+import com.dream.dreamtheather.activity.MainActivity;
 import com.dream.dreamtheather.Model.Movie;
 import com.dream.dreamtheather.R;
 import com.dream.dreamtheather.adapter.NowShowingAdapter;

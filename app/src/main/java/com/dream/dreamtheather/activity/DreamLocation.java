@@ -1,4 +1,4 @@
-package com.dream.dreamtheather;
+package com.dream.dreamtheather.activity;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -27,6 +27,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.dream.dreamtheather.Model.Cinema;
+import com.dream.dreamtheather.R;
 import com.dream.dreamtheather.databinding.ActivityDreamLocationBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

@@ -1,4 +1,4 @@
-package com.dream.dreamtheather.Fragment;
+package com.dream.dreamtheather.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.dream.dreamtheather.MainActivity;
+import com.dream.dreamtheather.activity.MainActivity;
 import com.dream.dreamtheather.Model.Movie;
 import com.dream.dreamtheather.Model.ShowTime;
 import com.dream.dreamtheather.R;

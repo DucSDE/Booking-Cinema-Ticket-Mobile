@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.dream.dreamtheather.Fragment.BookingFragment;
-import com.dream.dreamtheather.Fragment.MovieDetail;
-import com.dream.dreamtheather.MainActivity;
+import com.dream.dreamtheather.fragment.BookingFragment;
+import com.dream.dreamtheather.fragment.MovieDetail;
+import com.dream.dreamtheather.activity.MainActivity;
 import com.dream.dreamtheather.Model.Movie;
 import com.dream.dreamtheather.R;
 

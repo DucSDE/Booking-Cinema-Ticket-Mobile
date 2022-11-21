@@ -1,22 +1,21 @@
-package com.dream.dreamtheather.Fragment;
+package com.dream.dreamtheather.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.asksira.loopingviewpager.LoopingViewPager;
-import com.dream.dreamtheather.MainActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.dream.dreamtheather.activity.MainActivity;
 import com.dream.dreamtheather.Model.Movie;
 import com.dream.dreamtheather.R;
-import com.dream.dreamtheather.adapter.SpotlightAdapter;
-import com.dream.dreamtheather.adapter.SpotlightViewPagerAdapter;
+import com.dream.dreamtheather.adapter.NowShowingAdapter;
 import com.dream.dreamtheather.adapter.transformer.DepthPageTransformer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,37 +30,38 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SpotlightFragment extends Fragment implements OnCompleteListener<QuerySnapshot>, OnFailureListener {
+public class NowShowingFragment extends Fragment implements OnCompleteListener<QuerySnapshot>, OnFailureListener {
 
-    private static final String TAG = "SpotlightTab";
-    private static final int DELAY_TIME = 3000;
+    private static final String TAG ="NowShowingTab";
 
-    public SpotlightFragment newInstance(){
-        SpotlightFragment fragment = new SpotlightFragment();
-        return fragment;
-    }
+    NowShowingAdapter mAdapter;
 
-    @BindView(R.id.viewpager_spotlight)
+    FirebaseFirestore mFirebaseFireStore;
+
+    @BindView(R.id.viewpager_nowShowing)
     ViewPager2 viewPager;
 
-    SpotlightAdapter viewPagerAdapter;
-
-    FirebaseFirestore firebaseFirestore;
+    public NowShowingFragment newInstance(){
+        NowShowingFragment fragment = new NowShowingFragment();
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_spotlight, container, false);
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_now_showing, container, false);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
-        viewPager = view.findViewById(R.id.viewpager_spotlight);
+        ButterKnife.bind(this,view);
+
         viewPager.setClipToPadding(false);
         viewPager.setPadding(100,0,100,0);
-        firebaseFirestore = ((MainActivity) getActivity()).firebaseFirestore;
+        mFirebaseFireStore = ((MainActivity) getActivity()).firebaseFirestore;
         refreshData();
         viewPager.setPageTransformer(new DepthPageTransformer());
         viewPager.registerOnPageChangeCallback(viewPagerCallback);
@@ -102,16 +102,15 @@ public class SpotlightFragment extends Fragment implements OnCompleteListener<Qu
             };
 
 
-
     public void refreshData() {
-        firebaseFirestore.collection("feature_movie")
+        mFirebaseFireStore.collection("now_showing")
                 .get()
                 .addOnCompleteListener(this)
                 .addOnFailureListener(this);
     }
-
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
 
         if (task.isSuccessful()) {
             QuerySnapshot querySnapshot = task.getResult();
@@ -125,10 +124,12 @@ public class SpotlightFragment extends Fragment implements OnCompleteListener<Qu
                 }
             });
 
-            viewPagerAdapter = new SpotlightAdapter(getContext());
-            viewPagerAdapter.setData(listMovieGetFromFirebase);
-            viewPager.setAdapter(viewPagerAdapter);
-            listSize = viewPagerAdapter.getItemCount();
+            mAdapter = new NowShowingAdapter(getContext());
+            mAdapter.setData(listMovieGetFromFirebase);
+            viewPager.setAdapter(mAdapter);
+            listSize = mAdapter.getItemCount();
+            Log.v(TAG, "done add spotlight movie");
+
             Log.v(TAG, "done add spotlight movie");
         } else
             Log.w(TAG, "Error getting documents.", task.getException());
@@ -137,13 +138,5 @@ public class SpotlightFragment extends Fragment implements OnCompleteListener<Qu
     @Override
     public void onFailure(@NonNull Exception e) { // here
         Log.d(TAG, "onFailure");
-        viewPager.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-//        handler.postDelayed(runnable, 2000); // Slide duration 3 seconds
-
     }
 }

@@ -1,4 +1,4 @@
-package com.dream.dreamtheather;
+package com.dream.dreamtheather.activity;
 
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -7,6 +7,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.dream.dreamtheather.R;
 
 import butterknife.BindView;
 import butterknife.OnClick;

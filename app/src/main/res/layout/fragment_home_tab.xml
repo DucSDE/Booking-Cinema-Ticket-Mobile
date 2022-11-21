@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/black"
-    tools:context=".Fragment.HomeTabFragment">
+    tools:context=".fragment.hometab.HomeTabFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -49,6 +49,8 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/home_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+    />
 </LinearLayout>
 

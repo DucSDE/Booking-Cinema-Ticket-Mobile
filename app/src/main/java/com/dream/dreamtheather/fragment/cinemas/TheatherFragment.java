@@ -1,10 +1,9 @@
-package com.dream.dreamtheather.Fragment;
+package com.dream.dreamtheather.fragment.cinemas;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,8 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.dream.dreamtheather.MainActivity;
+import com.dream.dreamtheather.activity.MainActivity;
 import com.dream.dreamtheather.Model.Cinema;
 import com.dream.dreamtheather.R;
 import com.dream.dreamtheather.adapter.CinemaAdapter;
@@ -28,7 +26,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

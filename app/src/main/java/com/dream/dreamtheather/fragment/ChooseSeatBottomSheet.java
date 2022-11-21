@@ -1,11 +1,8 @@
-package com.dream.dreamtheather.Fragment;
+package com.dream.dreamtheather.fragment;
 
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,26 +10,26 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.dream.dreamtheather.MainActivity;
+import com.dream.dreamtheather.activity.MainActivity;
+import com.dream.dreamtheather.Model.DateShowTime;
+import com.dream.dreamtheather.Model.DetailShowTime;
+import com.dream.dreamtheather.Model.ShowTime;
 import com.dream.dreamtheather.Model.Ticket;
 import com.dream.dreamtheather.Model.UserInfo;
 import com.dream.dreamtheather.R;
-import com.dream.dreamtheather.RechargeActivity;
 import com.dream.dreamtheather.adapter.ChooseSeatAdapter;
 import com.dream.dreamtheather.util.Tool;
+import com.dream.dreamtheather.util.widget.BoundItemDecoration;
 import com.dream.dreamtheather.util.widget.SuccessTickView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -53,12 +50,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ChooseRechargeProviderBottomSheet extends BottomSheetDialogFragment
+public class ChooseSeatBottomSheet extends BottomSheetDialogFragment
         implements ChooseSeatAdapter.OnSelectedChangedListener,
         OnCompleteListener<DocumentSnapshot>, OnFailureListener,
         ViewTreeObserver.OnGlobalLayoutListener {
 
-    private static final String TAG = "ChooseRechargeProviderBottomSheet";
+    private static final String TAG = "ChooseSeatBottomSheet";
     private static final int DBS = com.google.android.material.R.id.design_bottom_sheet;
 
     private String ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -66,32 +63,38 @@ public class ChooseRechargeProviderBottomSheet extends BottomSheetDialogFragment
     private int mPriceValue = 0;
     private List<Integer> mSelects = new ArrayList<>();
 
-    public static ChooseRechargeProviderBottomSheet newInstance(AppCompatActivity activity) {
-        ChooseRechargeProviderBottomSheet c = new ChooseRechargeProviderBottomSheet();
+    public static ChooseSeatBottomSheet newInstance(AppCompatActivity activity, ShowTime showTime, int datePos, int timePos) {
+        ChooseSeatBottomSheet c = new ChooseSeatBottomSheet();
+        c.init(showTime, datePos, timePos);
         c.show(activity.getSupportFragmentManager(), TAG);
         return c;
     }
 
+    private ShowTime mShowTime;
+    private DateShowTime mDateShowTime;
+    private DetailShowTime mDetailShowTime;
     private FirebaseUser mUser;
-    private FirebaseFirestore firebaseFirestore;
+    private FirebaseFirestore mDb;
 
-    @BindView(R.id.rad_group_provider)
-    RadioGroup rad_group_provider;
-    @BindView(R.id.tvAmountRecharge)
-    EditText tvAmountRecharge;
+
+    @BindView(R.id.recycle_view)
+    RecyclerView mRecyclerView;
+    ChooseSeatAdapter mAdapter;
+    @BindView(R.id.seat_list)
+    TextView mSeatList;
+
+    @BindView(R.id.price)
+    TextView mPrice;
     @BindView(R.id.button)
     Button mPayNow;
     @BindView(R.id.alert)
     TextView mAlert;
 
-    @BindView(R.id.providerZalo)
-    RadioButton providerZalo;
-    @BindView(R.id.providerMomo)
-    RadioButton providerMomo;
-    @BindView(R.id.providerPaypal)
-    RadioButton providerPaypal;
-
-    RadioButton rechargeProvider;
+    private void init(ShowTime showTime, int datePos, int timePos) {
+        mShowTime = showTime;
+        mDateShowTime = showTime.getDateShowTime().get(datePos);
+        mDetailShowTime = mDateShowTime.getDetailShowTimes().get(timePos);
+    }
 
     @Override
     public int getTheme() {
@@ -101,7 +104,7 @@ public class ChooseRechargeProviderBottomSheet extends BottomSheetDialogFragment
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.choose_recharge_provider, container, false);
+        return inflater.inflate(R.layout.choose_seat_bottom_sheet, container, false);
     }
 
     @Override
@@ -116,14 +119,14 @@ public class ChooseRechargeProviderBottomSheet extends BottomSheetDialogFragment
     private void getUserInfo() {
         String id = mUser.getUid();
 
-        DocumentReference userGet = firebaseFirestore.collection("user_info").document(id);
+        DocumentReference userGet = mDb.collection("user_info").document(id);
         userGet.get()
                 .addOnSuccessListener(documentSnapshot -> {
                     mUserInfo = documentSnapshot.toObject(UserInfo.class);
                     seeHowMuchMoney();
                 });
 
-        firebaseFirestore.collection("database_info")
+        mDb.collection("database_info")
                 .document("show_time_info").get()
                 .addOnCompleteListener(this)
                 .addOnFailureListener(this);
@@ -139,9 +142,17 @@ public class ChooseRechargeProviderBottomSheet extends BottomSheetDialogFragment
 
     private void onViewCreated(View view) {
         ButterKnife.bind(this, view);
-        firebaseFirestore = ((MainActivity) getActivity()).firebaseFirestore;
+        mAdapter = new ChooseSeatAdapter(getContext());
+        mDb = ((MainActivity) getActivity()).firebaseFirestore;
         mUser = ((MainActivity) getActivity()).user;
+
         getUserInfo();
+
+        mAdapter.setRowAndColumn(mDetailShowTime.getSeatColumnNumber(),mDetailShowTime.getSeatRowNumber());
+        mAdapter.setOnSelectedChangedListener(this);
+        mRecyclerView.setAdapter(mAdapter);
+        setLayoutManager();
+        mAdapter.setData(mDetailShowTime.getSeats());
     }
 
     @OnClick(R.id.toggleButton)
@@ -155,6 +166,17 @@ public class ChooseRechargeProviderBottomSheet extends BottomSheetDialogFragment
         mSelects.addAll(selects);
 
         String text = "";
+        int column = mDetailShowTime.getSeatColumnNumber();
+        int row = mDetailShowTime.getSeatRowNumber();
+        mPriceValue = mDetailShowTime.getPrice() * selects.size();
+
+        for (int select : selects) {
+            int myRow = select / row;
+            int myColumn = select % column;
+            text = String.format("%s%c%c ", text, ABC.charAt(myRow), NUM.charAt(myColumn));
+        }
+        mSeatList.setText(text);
+        mPrice.setText(mPriceValue + " ₫");
 
         if (mPriceValue > mBalance) {
             mAlert.setText(getString(R.string.your_balanced_is) + mBalance + getString(R.string.it_is_not_enough));
@@ -173,56 +195,46 @@ public class ChooseRechargeProviderBottomSheet extends BottomSheetDialogFragment
 
     }
 
+    void setLayoutManager() {
+        GridLayoutManager grid = new GridLayoutManager(getContext(),
+                mDetailShowTime.getSeatColumnNumber());
+        float width = Tool.getScreenSize(getContext())[0] - getResources().getDimension(R.dimen.margin_start_recycler_view) - getResources().getDimension(R.dimen.margin_end_recycler_view);
+        int column = mDetailShowTime.getSeatColumnNumber();
+        int row = mDetailShowTime.getSeatRowNumber();
+        BoundItemDecoration b = new BoundItemDecoration(width, (width / column * row), column, row, 0, 0);
+        mRecyclerView.addItemDecoration(b);
+        mRecyclerView.setLayoutManager(grid);
+    }
+
+    private long mNextTicketID = 0;
 
     @OnClick(R.id.button)
-    public void rechargeNow(View view) {
-        int providerChecked = rad_group_provider.getCheckedRadioButtonId();
-        rechargeProvider = requireView().findViewById(providerChecked);
-        String providerName = rechargeProvider.getText().toString();
-        Log.d(TAG, "rechargeNow: provider checked: " + providerName );
-        String amount = tvAmountRecharge.getText().toString();
-        Log.d(TAG, "rechargeNow: amount recharge: "+ amount);
-        mSendingDialog = new BottomSheetDialog(requireContext());
+    void payNow() {
+        Ticket ticket = new Ticket();
 
-        mSendingDialog.setContentView(R.layout.send_new_recharge_order);
+        ticket.setID((int) mNextTicketID);
+        ticket.setCinemaID(mShowTime.getCinemaID());
+        ticket.setMovieID(mShowTime.getMovieID());
+        ticket.setCinemaName(mShowTime.getCinemaName());
+        ticket.setMovieName(mShowTime.getMovieName());
+        ticket.setDate(mDateShowTime.getDate());
+        ticket.setTime(mDetailShowTime.getTime());
+        ticket.setRoom(mDetailShowTime.getRoom());
+        ticket.setSeat(mSeatList.getText().toString());
+        ticket.setPrice(mPriceValue);
+        ticket.setUserUID(mUser.getUid());
+        mTicket = ticket;
+        mSendingDialog = new BottomSheetDialog(getContext());
+
+        mSendingDialog.setContentView(R.layout.send_new_movie);
         mSendingDialog.setCancelable(false);
         mSendingDialog.findViewById(R.id.close).setOnClickListener(v -> cancelSending());
         mSendingDialog.show();
-
-        Handler handler = new Handler();
-        handler.postDelayed(()->{
-            switch (providerName)
-            {
-                case "ZaloPay":
-                    startRechargeActivity(providerName,mUserInfo.getId(),amount);
-                case "PayPal":
-                    startRechargeActivity(providerName,mUserInfo.getId(),amount);
-                case "Momo":
-                    startRechargeActivity(providerName,mUserInfo.getId(),amount);
-                default:
-                    startRechargeActivity(providerName,mUserInfo.getId(),amount);
-            }
-        }, 500);
-
-
-    }
-    ActivityResultLauncher<Intent> rechargeIntentLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    Log.d(TAG, "requestCode: ");
-                    Log.d(TAG, "resultCode: " + result.getResultCode());
-                }
-            }
-    );
-
-    public void startRechargeActivity(String providerName, String userID, String amount){
-        Intent intent = new Intent(requireContext(),RechargeActivity.class);
-        Bundle data = new Bundle();
-        data.putStringArray("data",new String[]{providerName, userID, amount});
-        intent.putExtras(data);
-        startActivity(intent);
-//        rechargeIntentLauncher.launch(intent);
+        successStep = 4;
+        saveShowTime(ticket);
+        upTicketNumber(ticket);
+        saveTicket(ticket);
+        saveTicketToUserInfo(ticket);
     }
 
     private BottomSheetDialog mSendingDialog;
@@ -261,6 +273,7 @@ public class ChooseRechargeProviderBottomSheet extends BottomSheetDialogFragment
 
                 s.postDelayed(() -> {
                     mSendingDialog.dismiss();
+                    mRecyclerView.postDelayed(this::showTicketPrint, 350);
                 }, 2000);
                 s.setVisibility(View.VISIBLE);
                 s.startTickAnim();
@@ -285,25 +298,34 @@ public class ChooseRechargeProviderBottomSheet extends BottomSheetDialogFragment
     private int successStep;
     Ticket mTicket;
 
+    private void upTicketNumber(Ticket t) {
+        mNextTicketID++;
+        mDb.collection("database_info")
+                .document("show_time_info")
+                .update("ticket_count", mNextTicketID)
+                .addOnCompleteListener(task -> checkSuccess())
+                .addOnFailureListener(e -> fail());
+    }
+
     private void fail() {
         cancelled = true;
         setOnFailure();
     }
 
     private void saveShowTime(Ticket t) {
-//        List<Boolean> list = mDetailShowTime.getSeats();
-//        for (int i : mSelects) {
-//            list.set(i, true);
-//        }
-//
-//        firebaseFirestore.collection("show_time")
-//                .document(mShowTime.getID() + "")
-//                .set(mShowTime).addOnSuccessListener(aVoid -> checkSuccess())
-//                .addOnFailureListener(e -> fail());
+        List<Boolean> list = mDetailShowTime.getSeats();
+        for (int i : mSelects) {
+            list.set(i, true);
+        }
+
+        mDb.collection("show_time")
+                .document(mShowTime.getID() + "")
+                .set(mShowTime).addOnSuccessListener(aVoid -> checkSuccess())
+                .addOnFailureListener(e -> fail());
     }
 
     private void saveTicket(Ticket t) {
-        firebaseFirestore.collection("ticket")
+        mDb.collection("ticket")
                 .document(t.getID() + "")
                 .set(t).addOnSuccessListener(aVoid -> checkSuccess())
                 .addOnFailureListener(e -> fail());
@@ -321,7 +343,7 @@ public class ChooseRechargeProviderBottomSheet extends BottomSheetDialogFragment
     private void saveTicketToUserInfo(Ticket t) {
         mUserInfo.getIdTicket().add(t.getID());
         mUserInfo.setBalance(mBalance - mPriceValue);
-        firebaseFirestore.collection("user_info")
+        mDb.collection("user_info")
                 .document(mUser.getUid()).set(mUserInfo)
                 .addOnSuccessListener(aVoid -> checkSuccess())
                 .addOnFailureListener(e -> fail());
@@ -330,7 +352,8 @@ public class ChooseRechargeProviderBottomSheet extends BottomSheetDialogFragment
     @Override
     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
         DocumentSnapshot s = task.getResult();
-
+        if (s != null)
+            mNextTicketID = s.getLong("ticket_count");
 
     }
 
@@ -351,7 +374,7 @@ public class ChooseRechargeProviderBottomSheet extends BottomSheetDialogFragment
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == STATE_COLLAPSED)
-                    ChooseRechargeProviderBottomSheet.this.dismiss();
+                    ChooseSeatBottomSheet.this.dismiss();
             }
 
             @Override

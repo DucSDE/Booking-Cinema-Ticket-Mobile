@@ -1,4 +1,4 @@
-package com.dream.dreamtheather.Fragment;
+package com.dream.dreamtheather.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -33,14 +33,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Glide;
-import com.dream.dreamtheather.AdminActivity;
-import com.dream.dreamtheather.Login;
-import com.dream.dreamtheather.MainActivity;
+import com.dream.dreamtheather.activity.AdminActivity;
+import com.dream.dreamtheather.activity.LoginActivity;
+import com.dream.dreamtheather.activity.MainActivity;
 import com.dream.dreamtheather.Model.Users;
 import com.dream.dreamtheather.R;
 import com.dream.dreamtheather.helper.AppInfo;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -59,12 +58,13 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 import vn.zalopay.sdk.Environment;
 import vn.zalopay.sdk.ZaloPaySDK;
 
 public class AccountTabFragment extends Fragment {
 
-    private static final String TAG = "AccountTab";
+    private static final String TAG = "AccountTabFragment";
     // request code for get image choose
     private final int PICK_IMAGE_REQUEST = 22;
     private boolean isChangeValue = false;
@@ -78,7 +78,7 @@ public class AccountTabFragment extends Fragment {
     FirebaseStorage storage;
     StorageReference storageReference;
 
-    public static GoogleSignInClient mGoogleSignInClient;
+    public GoogleSignInClient mGoogleSignInClient;
 
     Users user_info, curUser;
 
@@ -96,10 +96,10 @@ public class AccountTabFragment extends Fragment {
     ImageView btnBack;
     @BindView(R.id.btnGoToAdmin)
     ImageView btnGoToAdmin;
-    @BindView(R.id.imgAvata)
-    RoundedImageView imgAvatar;
-    @BindView(R.id.btnUploadAvatar)
-    FloatingActionButton btnUploadAvatar;
+    @BindView(R.id.imgAvatar)
+    CircleImageView imgAvatar;
+//    @BindView(R.id.btnUploadAvatar)
+//    FloatingActionButton btnUploadAvatar;
     @BindView(R.id.btnNapTien)
     ImageView btnDeposit;
     @BindView(R.id.tvBalance)
@@ -116,8 +116,8 @@ public class AccountTabFragment extends Fragment {
     ImageButton btnDatePicker;
     @BindView(R.id.edtEmail)
     EditText edtEmail;
-    @BindView(R.id.edtUserFullName)
-    EditText edtUserFullName;
+    @BindView(R.id.tvUserFullName)
+    TextView edtUserFullName;
     @BindView(R.id.btnSignOut)
     Button btnSignOut;
     @BindView(R.id.btnSave)
@@ -218,7 +218,7 @@ public class AccountTabFragment extends Fragment {
     @OnClick(R.id.btnBack)
     public void BackToMain(View view) {
         startActivity(new Intent(getActivity(), MainActivity.class));
-        getActivity().finish();
+        requireActivity().finish();
     }
 
     @OnClick(R.id.btnGoToAdmin)
@@ -227,10 +227,10 @@ public class AccountTabFragment extends Fragment {
 //        getActivity().finish();
     }
 
-    @OnClick({R.id.btnUploadAvatar, R.id.imgAvata})
-    public void ChangeAvatar(View view) {
-        SelectImage();
-    }
+//    @OnClick({R.id.btnUploadAvatar, R.id.imgAvatar})
+//    public void ChangeAvatar(View view) {
+//        SelectImage();
+//    }
 
     @OnClick(R.id.btnSave)
     public void updateUser(View view) {
@@ -254,14 +254,14 @@ public class AccountTabFragment extends Fragment {
             Log.d(TAG, "after select date:" + dateOfBirth);
         }
     };
-    ;
+
 
     @OnClick(R.id.btnDatePicker)
     public void pickBirthDay(View view) {
         Calendar calendar = Calendar.getInstance();
         Date userDoB = new Date();
         try {
-            if (user_info.getBirthDay() != "")
+            if (!user_info.getBirthDay().equals(""))
                 userDoB = format.parse(user_info.getBirthDay());
             if (userDoB != null) {
                 calendar.setTime(userDoB);
@@ -294,6 +294,7 @@ public class AccountTabFragment extends Fragment {
             userGet.get().addOnSuccessListener(documentSnapshot -> {
                 user_info = documentSnapshot.toObject(Users.class);
                 curUser = user_info;
+                assert user_info != null;
                 displayUserInfo(user_info);
             }).addOnFailureListener(e -> Log.e(TAG, "Error: failed to get user info with ID: " + userID + " \nwith Error" + e.getMessage()));
         } else {
@@ -337,8 +338,8 @@ public class AccountTabFragment extends Fragment {
     }
 
     private void gotoLoginActivity() {
-        startActivity(new Intent(getActivity(), Login.class));
-        getActivity().finish();
+        startActivity(new Intent(getActivity(), LoginActivity.class));
+        requireActivity().finish();
     }
 
     private void SelectImage() {
@@ -493,4 +494,5 @@ public class AccountTabFragment extends Fragment {
         Log.e(TAG, "napTien: click");
         ChooseRechargeProviderBottomSheet.newInstance((MainActivity)getActivity());
     }
+
 }

@@ -1,6 +1,10 @@
-package com.dream.dreamtheather.Fragment;
+package com.dream.dreamtheather.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,12 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.dream.dreamtheather.MainActivity;
+import com.dream.dreamtheather.activity.MainActivity;
 import com.dream.dreamtheather.Model.Movie;
 import com.dream.dreamtheather.R;
 import com.dream.dreamtheather.adapter.NowShowingAdapter;
@@ -30,9 +29,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NowShowingFragment extends Fragment implements OnCompleteListener<QuerySnapshot>, OnFailureListener {
+public class UpcomingFragment extends Fragment implements OnCompleteListener<QuerySnapshot>, OnFailureListener {
 
-    private static final String TAG ="NowShowingTab";
+    private static final String TAG ="UpcomingTab";
 
     @BindView(R.id.rv_film)
     RecyclerView mRecyclerView;
@@ -41,8 +40,8 @@ public class NowShowingFragment extends Fragment implements OnCompleteListener<Q
 
     FirebaseFirestore db;
 
-    public NowShowingFragment newInstance(){
-        NowShowingFragment fragment = new NowShowingFragment();
+    public UpcomingFragment newInstance(){
+        UpcomingFragment fragment = new UpcomingFragment();
         return fragment;
     }
 
@@ -50,7 +49,7 @@ public class NowShowingFragment extends Fragment implements OnCompleteListener<Q
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_now_showing, container, false);
+        View view = inflater.inflate(R.layout.fragment_future_film, container, false);
         return view;
     }
 
@@ -69,7 +68,7 @@ public class NowShowingFragment extends Fragment implements OnCompleteListener<Q
     }
 
     public void refreshData() {
-        db.collection("now_showing")
+        db.collection("up_coming")
                 .get()
                 .addOnCompleteListener(this)
                 .addOnFailureListener(this);
@@ -92,7 +91,7 @@ public class NowShowingFragment extends Fragment implements OnCompleteListener<Q
                 }});
             if(mAdapter!=null)
                 mAdapter.setData(mM);
-            Log.v(TAG,"done add now showing movie");
+            Log.v(TAG,"done add up coming movie");
         } else
             Log.w(TAG, "Error getting documents.", task.getException());
     }

@@ -13,9 +13,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.dream.dreamtheather.AdminActivity;
-import com.dream.dreamtheather.Fragment.NowShowingMoviesOfCinema;
-import com.dream.dreamtheather.MainActivity;
+import com.dream.dreamtheather.activity.AdminActivity;
+import com.dream.dreamtheather.fragment.NowShowingMoviesOfCinema;
+import com.dream.dreamtheather.activity.MainActivity;
 import com.dream.dreamtheather.Model.Cinema;
 import com.dream.dreamtheather.R;
 import com.dream.dreamtheather.admin.addmovie2cinema.ChooseWhichMovieToAdd;

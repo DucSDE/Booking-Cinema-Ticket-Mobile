@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
     <LinearLayout
         android:id="@+id/mainLayout"
@@ -22,7 +22,7 @@
                 android:id="@+id/MainFragmentContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:name="com.dream.dreamtheather.Fragment.HomeTabFragment"
+                android:name="com.dream.dreamtheather.fragment.hometab.HomeTabFragment"
                 />
 
         </LinearLayout>

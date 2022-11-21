@@ -1,4 +1,4 @@
-package com.dream.dreamtheather;
+package com.dream.dreamtheather.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.dream.dreamtheather.R;
+import com.dream.dreamtheather.activity.LoginActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -41,7 +44,7 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     public void openActivity() {
-        Intent intent = new Intent(this, Login.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         this.finish();

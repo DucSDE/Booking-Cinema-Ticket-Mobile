@@ -1,4 +1,4 @@
-package com.dream.dreamtheather;
+package com.dream.dreamtheather.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.dream.dreamtheather.Model.InputValidatorHelper;
 import com.dream.dreamtheather.Model.Users;
+import com.dream.dreamtheather.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,14 +37,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.joda.time.*;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Register extends AppCompatActivity {
 
@@ -299,7 +297,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void BackToLogin(View view) {
-        startActivity(new Intent(Register.this, Login.class));
+        startActivity(new Intent(Register.this, LoginActivity.class));
         finish();
     }
 

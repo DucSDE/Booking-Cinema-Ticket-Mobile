@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.dream.dreamtheather.AdminActivity;
+import com.dream.dreamtheather.activity.AdminActivity;
 import com.dream.dreamtheather.Model.Cinema;
 import com.dream.dreamtheather.R;
 import com.dream.dreamtheather.adapter.CinemaAdapter;

@@ -65,7 +65,7 @@
             android:value="@string/API_KEY" />
 
         <activity
-            android:name=".DreamLocation"
+            android:name=".activity.DreamLocation"
             android:exported="false"
             android:label="@string/title_activity_dream_location" />
         <!-- meta fb required -->
@@ -93,39 +93,44 @@
             </intent-filter>
         </activity> <!-- add fb permission -->
         <activity
-            android:name=".ForgottenPassword"
+            android:name=".activity.ForgottenPassword"
             android:exported="true" />
         <activity
-            android:name=".Register"
+            android:name=".activity.Register"
             android:exported="true" />
         <activity
-            android:name=".SplashScreen"
+            android:name=".activity.SplashScreen"
             android:exported="true"
             android:theme="@style/AppTheme.Launcher">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.UserProfile"
+            android:exported="true" />
+        <activity
+            android:name=".activity.AdminActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Login"
-            android:exported="true" />
-        <activity
-            android:name=".UserProfile"
-            android:exported="true" />
-        <activity
-            android:name=".AdminActivity"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
-            android:exported="true">
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
-        <activity android:name=".RechargeActivity"
+        <activity android:name=".activity.RechargeActivity"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
@@ -137,7 +142,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SearchResultsActivity"
+            android:name=".activity.SearchResultsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

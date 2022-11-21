@@ -1,6 +1,5 @@
 package com.dream.dreamtheather.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,24 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.asksira.loopingviewpager.LoopingPagerAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.dream.dreamtheather.Fragment.BookingFragment;
-import com.dream.dreamtheather.Fragment.MovieDetail;
-import com.dream.dreamtheather.Fragment.SpotlightFilmFragment;
-import com.dream.dreamtheather.MainActivity;
+import com.dream.dreamtheather.fragment.BookingFragment;
+import com.dream.dreamtheather.fragment.MovieDetail;
+import com.dream.dreamtheather.activity.MainActivity;
 import com.dream.dreamtheather.Model.Movie;
 import com.dream.dreamtheather.R;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 

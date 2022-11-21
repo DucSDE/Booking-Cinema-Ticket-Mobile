@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background"
     android:orientation="vertical"
-    tools:context=".Login">
+    tools:context=".activity.LoginActivity">
 
     <ImageView
         android:layout_width="150dp"
@@ -220,16 +220,20 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@+id/login_form"
+            app:layout_constraintStart_toStartOf="@+id/login_form"
+            app:layout_constraintTop_toTopOf="@+id/login_form"
+            app:layout_constraintBottom_toBottomOf="@+id/login_form"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:visibility="invisible"
-        tools:ignore="MissingConstraints" />
+
 
 </LinearLayout>
