@@ -108,7 +108,7 @@ public class NowShowingMoviesOfCinema extends Fragment implements OnCompleteList
         mTitle.setText(CinemaName);
 
         db = ((MainActivity)getActivity()).firebaseFirestore;
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false);
         mRecyclerView.setLayoutManager(layoutManager);
 
         mAdapter = new NowShowingAdapter(getActivity());
@@ -196,7 +196,7 @@ public class NowShowingMoviesOfCinema extends Fragment implements OnCompleteList
 
     @OnClick(R.id.btnMap)
     public void LoadMap() {
-        Intent intent = new Intent(getContext(), DreamLocation.class);
+        Intent intent = new Intent(requireContext(), DreamLocation.class);
         intent.putExtra("cinemaName", mTitle.getText().toString());
         intent.putExtra("cinemaHotLine", hotline);
         intent.putExtra("cinemaAddress", this.address);
