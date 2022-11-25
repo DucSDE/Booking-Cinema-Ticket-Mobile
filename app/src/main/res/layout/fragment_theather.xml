@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.cinemas.TheatherFragment"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context=".fragment.cinemas.TheatherFragment">
 
     <LinearLayout
         android:id="@+id/top_bar"
@@ -17,34 +17,36 @@
         <ImageView
             android:id="@+id/btnBackToHome"
             android:layout_width="50dp"
-            android:paddingVertical="15dp"
             android:layout_height="?attr/actionBarSize"
-            app:srcCompat="@drawable/ic_back_button"
-            android:contentDescription="@string/btn_back_description" />
+            android:contentDescription="@string/btn_back_description"
+            android:paddingVertical="15dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_back_button" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/title_list_cinema"
             android:gravity="center"
+            android:text="@string/title_list_cinema"
+            android:textColor="@color/white"
             android:textSize="25sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_layout"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_cinema"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black"
-        tools:listitem="@layout/item_cinema_tab"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"/>
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_cinema"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            tools:listitem="@layout/item_cinema_tab" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -54,11 +56,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="@color/setting_label_color"
-        android:textStyle="bold"
-        android:text="@string/ops"
-        android:textSize="18sp"
         android:gravity="center"
+        android:text="@string/ops"
+        android:textColor="@color/setting_label_color"
+        android:textSize="18sp"
+        android:textStyle="bold"
         android:visibility="gone" />
 
 </LinearLayout>

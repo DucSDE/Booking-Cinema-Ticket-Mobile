@@ -1,6 +1,12 @@
 package com.dream.dreamtheather.fragment.cinemas;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,16 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.dream.dreamtheather.activity.MainActivity;
 import com.dream.dreamtheather.Model.Cinema;
 import com.dream.dreamtheather.R;
+import com.dream.dreamtheather.activity.MainActivity;
 import com.dream.dreamtheather.adapter.CinemaAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,7 +25,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -54,8 +52,7 @@ public class TheatherFragment extends Fragment implements OnCompleteListener<Que
     FirebaseFirestore firebaseFirestore;
 
     public static TheatherFragment newInstance() {
-        TheatherFragment fragment = new TheatherFragment();
-        return fragment;
+        return new TheatherFragment();
     }
 
 
@@ -71,7 +68,7 @@ public class TheatherFragment extends Fragment implements OnCompleteListener<Que
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this,view);
 
-        firebaseFirestore = ((MainActivity)getActivity()).firebaseFirestore;
+        firebaseFirestore = ((MainActivity)requireActivity()).firebaseFirestore;
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
         rv_cinema.setLayoutManager(layoutManager);
 
@@ -102,16 +99,14 @@ public class TheatherFragment extends Fragment implements OnCompleteListener<Que
             QuerySnapshot querySnapshot = task.getResult();
 
             List<Cinema> getListShowingCinema = querySnapshot.toObjects(Cinema.class);
-            Collections.sort(getListShowingCinema, new Comparator<Cinema>() {
-                @Override
-                public int compare(Cinema o1, Cinema o2) {
-                    return o1.getId() - o2.getId();
-                }});
+            getListShowingCinema.sort(Comparator.comparingInt(Cinema::getId));
             if(cinemaAdapter!=null)
                 cinemaAdapter.setData(getListShowingCinema);
 
-        } else
+        } else {
+
             Log.w(TAG, "Error getting documents.", task.getException());
+        }
     }
 
     @Override
@@ -128,6 +123,6 @@ public class TheatherFragment extends Fragment implements OnCompleteListener<Que
 
     @OnClick(R.id.btnBackToHome)
     void BackToHome(){
-        getActivity().onBackPressed();
+        requireActivity().onBackPressed();
     }
 }
