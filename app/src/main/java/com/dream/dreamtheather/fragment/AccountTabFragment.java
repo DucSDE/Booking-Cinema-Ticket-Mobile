@@ -492,7 +492,7 @@ public class AccountTabFragment extends Fragment {
     @OnClick(R.id.btnNapTien)
     public void napTien(){
         Log.e(TAG, "napTien: click");
-        ChooseRechargeProviderBottomSheet.newInstance((MainActivity)getActivity());
+        ChooseRechargeProviderBottomSheet.newInstance((MainActivity)requireActivity());
     }
 
 }

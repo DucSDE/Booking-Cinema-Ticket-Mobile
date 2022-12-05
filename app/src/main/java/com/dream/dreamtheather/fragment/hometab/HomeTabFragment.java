@@ -1,42 +1,40 @@
 package com.dream.dreamtheather.fragment.hometab;
 
+import android.annotation.SuppressLint;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.dream.dreamtheather.R;
+import com.dream.dreamtheather.fragment.NowShowingFragment;
+import com.dream.dreamtheather.fragment.UpcomingFragment;
 import com.dream.dreamtheather.fragment.hometab.adapter.HomeTabViewPagerAdapter;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeTabFragment extends Fragment implements SearchView.OnQueryTextListener {
+public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "HomeTab";
 
-    String[] tabArray = {
-            "Đang chiếu",
-            "Sắp chiếu"};
-
-    @BindView(R.id.tab_layout)
-    TabLayout tabLayout;
-
-    @BindView(R.id.home_viewpager)
+    FragmentContainerView fragmentContainerView;
     ViewPager2 viewPager;
+
+    ColorStateList def;
+    TextView itemNowShowing;
+    TextView itemUpcomingShowing;
+    TextView select;
 
     HomeTabViewPagerAdapter homeTabViewPagerAdapter;
 
@@ -58,43 +56,50 @@ public class HomeTabFragment extends Fragment implements SearchView.OnQueryTextL
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onViewCreated: ");
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        tabLayout = view.findViewById(R.id.tab_layout);
+        initView(view);
+    }
 
-        homeTabViewPagerAdapter = new HomeTabViewPagerAdapter(this);
-        viewPager.setAdapter(homeTabViewPagerAdapter);
-        new TabLayoutMediator(tabLayout, viewPager,
-                (tab, position) -> {
-                    tab.setText(tabArray[position]);
-                }
-        ).attach();
+    private void initView(View view) {
+        View customTabView = view.findViewById(R.id.layout_custom_tabs);
+        fragmentContainerView = view.findViewById(R.id.home_fragment_container);
+        initViewCustomTab(customTabView);
+    }
+
+    private void loadFragment(Fragment fragment ) {
+        // load fragment
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(fragmentContainerView.getId(), fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void initViewCustomTab(View customTabView) {
+
+        itemNowShowing = customTabView.findViewById(R.id.itemNowShowing);
+        itemUpcomingShowing = customTabView.findViewById(R.id.itemUpcomingShowing);
+        select = customTabView.findViewById(R.id.select);
+
+        itemNowShowing.setOnClickListener(this);
+        itemUpcomingShowing.setOnClickListener(this);
+        def = itemUpcomingShowing.getTextColors();
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.search);
-
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setOnQueryTextListener(this);
-        searchView.setIconified(false);
-
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        Toast.makeText(getActivity(), "Query Inserted", Toast.LENGTH_SHORT).show();
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        Toast.makeText(getActivity(), "attach to recyclerview", Toast.LENGTH_SHORT).show();
-        return true;
+    public void onClick(View customTabView) {
+        fragmentContainerView.removeAllViewsInLayout();
+        if (customTabView.getId() == R.id.itemNowShowing) {
+            select.animate().x(0).setDuration(100);
+            itemNowShowing.setTextColor(Color.WHITE);
+            itemUpcomingShowing.setTextColor(def);
+            loadFragment(new NowShowingFragment());
+        } else if (customTabView.getId() == R.id.itemUpcomingShowing) {
+            itemNowShowing.setTextColor(def);
+            itemUpcomingShowing.setTextColor(Color.WHITE);
+            int size = itemUpcomingShowing.getWidth();
+            select.animate().x(size).setDuration(100);
+            loadFragment(new UpcomingFragment());
+        }
     }
 }

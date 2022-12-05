@@ -117,7 +117,8 @@ public class ChooseSeatBottomSheet extends BottomSheetDialogFragment
     private UserInfo mUserInfo;
 
     private void getUserInfo() {
-        String id = mUser.getUid();
+//        String id = mUser.getUid();
+        String id = "Frnk58DjQzXlideAnOudxAhDpyK2";
 
         DocumentReference userGet = mDb.collection("user_info").document(id);
         userGet.get()
@@ -222,7 +223,7 @@ public class ChooseSeatBottomSheet extends BottomSheetDialogFragment
         ticket.setRoom(mDetailShowTime.getRoom());
         ticket.setSeat(mSeatList.getText().toString());
         ticket.setPrice(mPriceValue);
-        ticket.setUserUID(mUser.getUid());
+        ticket.setUserUID("Frnk58DjQzXlideAnOudxAhDpyK2");
         mTicket = ticket;
         mSendingDialog = new BottomSheetDialog(getContext());
 
@@ -344,7 +345,7 @@ public class ChooseSeatBottomSheet extends BottomSheetDialogFragment
         mUserInfo.getIdTicket().add(t.getID());
         mUserInfo.setBalance(mBalance - mPriceValue);
         mDb.collection("user_info")
-                .document(mUser.getUid()).set(mUserInfo)
+                .document("Frnk58DjQzXlideAnOudxAhDpyK2").set(mUserInfo)
                 .addOnSuccessListener(aVoid -> checkSuccess())
                 .addOnFailureListener(e -> fail());
     }
@@ -365,8 +366,10 @@ public class ChooseSeatBottomSheet extends BottomSheetDialogFragment
     @Override
     public void onGlobalLayout() {
         BottomSheetDialog dialog = (BottomSheetDialog) getDialog();
-        FrameLayout bottomSheet = (FrameLayout) dialog.findViewById(DBS);
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
+        assert dialog != null;
+        FrameLayout bottomSheet = dialog.findViewById(DBS);
+        assert bottomSheet != null;
+        BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
         behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         behavior.setPeekHeight(-Tool.getNavigationHeight(requireActivity()));
         behavior.setHideable(false);

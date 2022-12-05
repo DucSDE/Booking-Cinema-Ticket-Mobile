@@ -17,9 +17,8 @@ public class HomeTabViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        switch (position) {
-            case 0 : return new NowShowingFragment();
-            case 1 : return new UpcomingFragment();
+        if (position == 1) {
+            return new UpcomingFragment();
         }
         return new NowShowingFragment();
     }

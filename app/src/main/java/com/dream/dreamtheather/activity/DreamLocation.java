@@ -34,6 +34,7 @@ import java.util.List;
 
 public class DreamLocation extends FragmentActivity implements OnMapReadyCallback {
     private static final String TAG = "GoogleMap";
+    public static final String mapURL = "http://maps.google.com/maps?q=loc:";
     private ActivityDreamLocationBinding binding;
     private GoogleMap mMap;
 
@@ -58,10 +59,12 @@ public class DreamLocation extends FragmentActivity implements OnMapReadyCallbac
         setContentView(binding.getRoot());
 
         firebaseFirestore = FirebaseFirestore.getInstance();
-        Intent getIntent = getIntent();
-        cinemaAddress = getIntent.getStringExtra("cinemaAddress");
-        cinemaName = getIntent.getStringExtra("cinemaName");
+        initUI();
+        getLocation();
 
+    }
+
+    private void initUI(){
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -71,11 +74,16 @@ public class DreamLocation extends FragmentActivity implements OnMapReadyCallbac
         //check location permission
         if (!checkPermissionGranted())
             locationPermissionLauncher.launch(permission);
+    }
 
+    private void getLocation(){
+        Intent getIntent = getIntent();
+        cinemaAddress = getIntent.getStringExtra("cinemaAddress");
+        cinemaName = getIntent.getStringExtra("cinemaName");
     }
 
     private void sendDirectionToGoogleMap(double latitude, double longitude) {
-        String strUri = "http://maps.google.com/maps?q=loc:" + latitude + "," + longitude + " (" + cinemaName + ")";
+        String strUri = mapURL + latitude + "," + longitude + " (" + cinemaName + ")";
         Intent mapIntent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(strUri));
         mapIntent.setPackage("com.google.android.apps.maps");
         mapIntent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
@@ -84,7 +92,7 @@ public class DreamLocation extends FragmentActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-
+        mMap = googleMap;
         Geocoder geocoder = new Geocoder(this);
         List<Address> addressList;
         try {
@@ -110,18 +118,14 @@ public class DreamLocation extends FragmentActivity implements OnMapReadyCallbac
             mMap = googleMap;
             mMap.setMyLocationEnabled(true);
         }
-        binding.btnDirection.setOnClickListener(v -> {
-            sendDirectionToGoogleMap(mLatitude, mLongitude);
-        });
+        binding.btnDirection.setOnClickListener(v -> sendDirectionToGoogleMap(mLatitude, mLongitude));
     }
 
     final ActivityResultLauncher<String[]> locationPermissionLauncher = registerForActivityResult(
             new ActivityResultContracts.RequestMultiplePermissions(),
             result -> {
-                Boolean fineLocationGranted = result.getOrDefault(
-                        Manifest.permission.ACCESS_FINE_LOCATION, false);
-                Boolean coarseLocationGranted = result.getOrDefault(
-                        Manifest.permission.ACCESS_COARSE_LOCATION, false);
+                Boolean fineLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false);
+                Boolean coarseLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false);
                 if (fineLocationGranted != null && fineLocationGranted) {
                     // Precise location access granted.
                     Log.d(TAG, "register: one of permission missing ");
@@ -130,7 +134,7 @@ public class DreamLocation extends FragmentActivity implements OnMapReadyCallbac
                     Log.d(TAG, "register: one of permission missing ");
                 } else {
                     // No location access granted.
-                    Log.d(TAG, "register: No location granted ");
+                    Log.d(TAG, "register: No location permission granted ");
                 }
             }
     );
@@ -141,4 +145,5 @@ public class DreamLocation extends FragmentActivity implements OnMapReadyCallbac
         return fine == PackageManager.PERMISSION_GRANTED && coarse == PackageManager.PERMISSION_GRANTED;
     }
 
+    //TODO: implementation get user current location and print route using Google Route and Direction API
 }

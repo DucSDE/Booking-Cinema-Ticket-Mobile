@@ -2,6 +2,13 @@ package com.dream.dreamtheather.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,20 +20,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.text.format.DateFormat;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.dream.dreamtheather.activity.MainActivity;
 import com.dream.dreamtheather.Model.Movie;
 import com.dream.dreamtheather.Model.ShowTime;
 import com.dream.dreamtheather.R;
+import com.dream.dreamtheather.activity.MainActivity;
 import com.dream.dreamtheather.adapter.DateAdapter;
 import com.dream.dreamtheather.adapter.DetailShowTimeAdapter;
 import com.google.firebase.firestore.EventListener;
@@ -105,15 +104,14 @@ public class BookingFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.booking_v2, container, false);
-        return view;
+        return inflater.inflate(R.layout.booking_v2, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        firebaseFirestore = ((MainActivity) getActivity()).firebaseFirestore;
+        firebaseFirestore = FirebaseFirestore.getInstance();
         setupToolbar();
         bindMovie();
 
@@ -180,7 +178,7 @@ public class BookingFragment extends Fragment
     @OnClick(R.id.movie_panel)
     void goToMovieDetail() {
         if (mMovie != null) {
-            ((MainActivity) getActivity()).loadFragment(MovieDetail.newInstance(mMovie));
+            ((MainActivity) requireActivity()).loadFragment(MovieDetail.newInstance(mMovie));
         }
     }
 
@@ -200,7 +198,7 @@ public class BookingFragment extends Fragment
     FirebaseFirestore firebaseFirestore;
 
     void refreshData() {
-        // firebaseFirestore.collection("cinema_list").whereArrayContains("movies",mMovie.getId()).addSnapshotListener(this);
+        // firebaseFireStore.collection("cinema_list").whereArrayContains("movies",mMovie.getId()).addSnapshotListener(this);
         firebaseFirestore.collection("show_time").whereEqualTo("movieID", mMovie.getId())
                 .addSnapshotListener(this);
     }
@@ -213,7 +211,7 @@ public class BookingFragment extends Fragment
             if (queryDocumentSnapshots != null) {
                 List<ShowTime> list = queryDocumentSnapshots.toObjects(ShowTime.class);
                 if (mDetailShowTimeAdapter != null) mDetailShowTimeAdapter.setData(list);
-                Log.d(TAG, "onEvent: " + list.toString());
+                Log.d(TAG, "onEvent: " + list);
             } else Log.d(TAG, "onEvent: null");
         } else {
             Log.d(TAG, "onEvent: Exception");
@@ -229,7 +227,7 @@ public class BookingFragment extends Fragment
 
     @Override
     public void onTimeClick(ShowTime showTime, int datePos, int timePos) {
-        ChooseSeatBottomSheet.newInstance(((MainActivity) getActivity()), showTime, datePos, timePos);
+        ChooseSeatBottomSheet.newInstance(((MainActivity) requireActivity()), showTime, datePos, timePos);
     }
 
     @Override

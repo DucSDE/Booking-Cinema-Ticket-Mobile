@@ -21,9 +21,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private static final int HOME = R.id.navigation_home,
-            THEATHER = R.id.navigation_theather,
-            ACCOUNT = R.id.navigation_account ;
+    private static final int    HOME        = R.id.navigation_home,
+                                THEATHER    = R.id.navigation_theather,
+                                ACCOUNT     = R.id.navigation_account ;
 
 
     public FirebaseFirestore firebaseFirestore;
@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-
 
         bottom_navigation = findViewById(R.id.bottom_navigation);
         bottom_navigation.setOnItemSelectedListener(mOnNavigationItemSelectedListener);

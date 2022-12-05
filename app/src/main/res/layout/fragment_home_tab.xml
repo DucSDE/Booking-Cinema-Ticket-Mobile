@@ -1,56 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/black"
+    android:orientation="vertical"
     tools:context=".fragment.hometab.HomeTabFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <include
+        android:id="@+id/layout_custom_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:layout_marginHorizontal="10dp"
+        layout="@layout/custom_tabs_layout"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:title="Dream"
-            app:titleTextColor="@color/FlatWhite">
-        </androidx.appcompat.widget.Toolbar>
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:background="@drawable/tablayout_background"
-            app:layout_constraintEnd_toEndOf="@id/toolbar"
-            app:layout_constraintStart_toStartOf="@id/toolbar"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:tabGravity="fill"
-            app:tabIndicatorHeight="0dp"
-            app:tabMode="fixed"
-            app:tabRippleColor="@null"
-            app:tabSelectedTextColor="@color/FlatRed"
-            app:tabTextColor="@color/FlatWhite"
-            >
-        </com.google.android.material.tabs.TabLayout>
-
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/home_viewpager"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/home_fragment_container"
+        android:name="com.dream.dreamtheather.fragment.NowShowingFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="10dp"
-    />
-</LinearLayout>
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomTab"
+        app:layout_constraintTop_toBottomOf="@+id/layout_custom_tabs"
+        tools:layout_editor_absoluteX="10dp" />
+
+    <include
+        android:id="@+id/bottomTab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/short_detail_of_film_and_booking_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
 

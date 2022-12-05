@@ -43,7 +43,6 @@
         <item>Documentary</item>
 
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="director">Đạo diễn: </string>
     <string name="cast">Diễn viên: </string>
@@ -213,5 +212,6 @@
     <string name="female">Nữ</string>
     <string name="phone_number">Số điện thoại</string>
     <string name="address_">Địa chỉ</string>
+    <string name="sample_duration">115 minutes</string>
 
 </resources>

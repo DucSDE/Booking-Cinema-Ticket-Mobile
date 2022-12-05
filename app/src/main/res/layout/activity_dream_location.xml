@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -33,18 +32,18 @@
         map:borderWidth="0dp"
         android:visibility="invisible"
         />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnDirection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        map:layout_constraintBottom_toBottomOf="parent"
-        map:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="20dp"
         android:layout_marginEnd="20dp"
-        android:src="@drawable/ic_direction"
-        android:contentDescription="@string/icon"
+        android:layout_marginBottom="20dp"
         android:backgroundTint="@color/blue"
+        android:contentDescription="@string/icon"
+        android:src="@drawable/ic_direction"
         map:borderWidth="0dp"
-        />
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
